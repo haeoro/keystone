@@ -51,5 +51,7 @@ int main()
 	1. look into windows functions that define struct members for SECURITY_DESCRIPTOR instead of just initializing it with
 	default values.
 
+	Note: you need multiple windows functions to set all members of the SECURITY_DESCRIPTOR structure. Strange, but we'll make it work. 
+
 	2. reference that microsoft article that I emailed to myself.
 */
