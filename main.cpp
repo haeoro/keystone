@@ -10,18 +10,30 @@ int main()
 {
 	SECURITY_DESCRIPTOR secDescriptor{}; // contains info such as, owner, group, Sacl, Dacl, control. (Important)
 
-	// section to intialiaze SECURITY_DESCRIPTOR
-	SID si
-	{
-
+	// SID structure stuff
+	SID_IDENTIFIER_AUTHORITY sia{
+		5
 	};
+	SID si{};
 
-
+	BOOL sidInit = AllocateAndInitializeSid(
+		&sia,
+		1,
+		1,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		&si
+	);
 	// END OF
 	SECURITY_ATTRIBUTES secAttribs // this gets passed as a pointer to this struct as an argument to CreateProcessA() function.
 	{
 		sizeof(SECURITY_ATTRIBUTES),
-		&secDescriptor, // pointer to the SECURITY_DESCRIPTOR struct 
+		&secDescriptor, // pointer to the SECURITY_DESCRIPTOR struct.
 		FALSE // tells us whether the security_attributes is inheritable.
 	};
 
