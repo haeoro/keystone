@@ -8,10 +8,7 @@
 
 int main()
 {
-	SECURITY_DESCRIPTOR objRights{}; // contains info such as, owner, group, Sacl, Dacl, control. (Important)
-
-
-
+	SECURITY_DESCRIPTOR secObjInfo{}; // contains info such as, owner, group, Sacl, Dacl, control. (Important)
 
 	// SID structure stuff
 	SID_IDENTIFIER_AUTHORITY sia
@@ -35,23 +32,16 @@ int main()
 	);
 	// END OF
 
-	// set revision for SECURITY_DESCRIPTOR.
+	// set owner
 
-	BOOL revisionSet = InitializeSecurityDescriptor( // first parameter satisfied.
-		&objRights,
-		SECURITY_DESCRIPTOR_REVISION
-	);
-
-	std::cout << revisionSet; // debug statement for revisionSet
-
+	BOOL SetSecurityDescriptorOwner(
 
 	// end 
-
 
 	SECURITY_ATTRIBUTES procAttribs // this gets passed as a pointer to this struct as an argument to CreateProcessA() function.
 	{
 		sizeof(SECURITY_ATTRIBUTES),
-		&objRights, // pointer to the SECURITY_DESCRIPTOR struct.
+		&secObjInfo, // pointer to the SECURITY_DESCRIPTOR struct.
 		FALSE // tells us whether the security_attributes is inheritable.
 	};
 
@@ -86,6 +76,6 @@ int main()
 
 		to-do
 	
-	~ initialize all members of objRights (SECURITY_DESCRIPTOR)
+	~ initialize all members of SECURITY_DESCRIPTOR except for the first three struct members. 
 
 */
