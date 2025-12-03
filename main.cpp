@@ -15,9 +15,9 @@ int main()
 	{
 		5
 	};
-	PSID si{};
+	PSID si{}; // this security identification object determines what level of authority we have. 
 
-	BOOL sid = AllocateAndInitializeSid(
+	BOOL sid = AllocateAndInitializeSid( // function to initialize our 
 		&sia, 
 		1,
 		SECURITY_WORLD_RID,
@@ -32,10 +32,33 @@ int main()
 	);
 	// END OF
 
-	// set owner
+	// set revision level and give default initialization to mostly everything else in the struct (SECURITY_DESCRIPTOR). 
 
-	BOOL SetSecurityDescriptorOwner(
+	BOOL setRevision = InitializeSecurityDescriptor(
+		&secObjInfo, 
+		SECURITY_DESCRIPTOR_REVISION
+	);
 
+	// end 
+
+	// set owner of SECURITY_DESCRIPTOR
+
+	BOOL secDesOwner = SetSecurityDescriptorOwner(
+		&secObjInfo, 
+		&si, 
+		0
+	);
+
+	std::cout << secDesOwner;
+
+	// end 
+
+	// set group for SECURITY_DESCRIPTOR
+	BOOL secDesGroup = SetSecurityDescriptorGroup(
+		&secObjInfo, 
+		&si, 
+		0
+	);
 	// end 
 
 	SECURITY_ATTRIBUTES procAttribs // this gets passed as a pointer to this struct as an argument to CreateProcessA() function.
@@ -76,6 +99,7 @@ int main()
 
 		to-do
 	
-	~ initialize all members of SECURITY_DESCRIPTOR except for the first three struct members. 
+	~ initialize all members of SECURITY_DESCRIPTOR except for the first three struct members 
+	(already init using InitializeSecurityDescriptor function)
 
 */
