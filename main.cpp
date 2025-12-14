@@ -18,9 +18,9 @@ int main()
 	PSID si{}; // this security identification object determines what level of authority we have. 
 
 	BOOL sid = AllocateAndInitializeSid( // function to initialize our 
-		&sia, 
+		&sia,
 		1,
-		SECURITY_WORLD_RID,
+		0x000001F4,
 		0,
 		0,
 		0,
@@ -30,12 +30,13 @@ int main()
 		0,
 		&si
 	);
+	//std::cout << sid;
 	// END OF
 
 	// set revision level and give default initialization to mostly everything else in the struct (SECURITY_DESCRIPTOR). 
 
 	BOOL setRevision = InitializeSecurityDescriptor(
-		&secObjInfo, 
+		&secObjInfo,
 		SECURITY_DESCRIPTOR_REVISION
 	);
 
@@ -44,22 +45,32 @@ int main()
 	// set owner of SECURITY_DESCRIPTOR
 
 	BOOL secDesOwner = SetSecurityDescriptorOwner(
-		&secObjInfo, 
-		&si, 
+		&secObjInfo,
+		&si,
 		0
 	);
-
-	std::cout << secDesOwner;
 
 	// end 
 
 	// set group for SECURITY_DESCRIPTOR
 	BOOL secDesGroup = SetSecurityDescriptorGroup(
-		&secObjInfo, 
-		&si, 
+		&secObjInfo,
+		&si,
 		0
 	);
 	// end 
+
+	// set SACL for SECURITY_DESCRIPTOR
+	
+	// commented out for now, need to make sure owner arguments are being configured correctly. 
+	/*
+	BOOL setDesSACL = SetSecurityDescriptorSacl(
+		&secObjInfo, 
+
+	);
+	*/
+
+	// end
 
 	SECURITY_ATTRIBUTES procAttribs // this gets passed as a pointer to this struct as an argument to CreateProcessA() function.
 	{
@@ -87,19 +98,21 @@ int main()
 		&sInfo,
 		&pInfo
 	);
+
+	std::cout << GetLastError();
 }
 
 
 /*
 		what i know.
 
-	when a user logs in, the os collect	s a set of data on the user that uniquely identifies the said user. 
-	It then stores the set in an access token. I think I should try my luck with trying to create a fake security 
-	descriptor. 
+	when a user logs in, the os collect	s a set of data on the user that uniquely identifies the said user.
+	It then stores the set in an access token. I think I should try my luck with trying to create a fake security
+	descriptor.
 
 		to-do
-	
-	~ initialize all members of SECURITY_DESCRIPTOR except for the first three struct members 
+
+	~ initialize all members of SECURITY_DESCRIPTOR except for the first three struct members
 	(already init using InitializeSecurityDescriptor function)
 
 */
