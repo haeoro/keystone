@@ -3,11 +3,10 @@
 class init
 {
 private:
+	SECURITY_DESCRIPTOR secObjInfo{}; // contains info such as, owner, group, Sacl, Dacl, control. (Important)
 public:
-	SECURITY_DESCRIPTOR security_descriptor_init() 
+	void secDiscriptorInit() 
 	{
-		SECURITY_DESCRIPTOR secObjInfo{}; // contains info such as, owner, group, Sacl, Dacl, control. (Important)
-
 		// SID structure stuff
 		SID_IDENTIFIER_AUTHORITY sia
 		{
@@ -28,7 +27,6 @@ public:
 			0,
 			&si
 		);
-		//std::cout << sid;
 		// END OF
 
 		// set revision level and give default initialization to mostly everything else in the struct (SECURITY_DESCRIPTOR). 
@@ -56,7 +54,18 @@ public:
 			&si,
 			0
 		);
+	}
 
+	SECURITY_DESCRIPTOR securityDescriptor() 
+	{
 		return secObjInfo;
 	}
 };
+
+/*
+	to-do
+	
+	~ tidy code up.
+	~ make sure everything is being initialized so we can pass it to procAttribs struct member in main.cpp.
+
+*/
