@@ -1,11 +1,12 @@
 #pragma once
+#include <iostream>
 
 class init
 {
 private:
 	SECURITY_DESCRIPTOR secObjInfo{}; // contains info such as, owner, group, Sacl, Dacl, control. (Important)
 public:
-	void secDiscriptorInit() 
+	void initializeSecurityDescriptor() 
 	{
 		// SID structure stuff
 		SID_IDENTIFIER_AUTHORITY sia
@@ -27,7 +28,7 @@ public:
 			0,
 			&si
 		);
-		// END OF
+		// END 
 
 		// set revision level and give default initialization to mostly everything else in the struct (SECURITY_DESCRIPTOR). 
 
@@ -43,7 +44,7 @@ public:
 		BOOL secDesOwner = SetSecurityDescriptorOwner(
 			&secObjInfo,
 			&si,
-			0
+			1
 		);
 
 		// end 
@@ -52,11 +53,42 @@ public:
 		BOOL secDesGroup = SetSecurityDescriptorGroup(
 			&secObjInfo,
 			&si,
-			0
+			1
 		);
+
+		//end 
+		
+		// set sacl for SECURITY_DESCRIPTOR
+		BOOL setDesSacl = SetSecurityDescriptorSacl(
+			&secObjInfo,
+			FALSE, 
+			NULL, 
+			TRUE
+		);
+
+		// end
+
+		// set dacl for SECURITY_DESCRIPTOR
+		BOOL setDesDacl = SetSecurityDescriptorDacl(
+			&secObjInfo,
+			FALSE,
+			NULL,
+			TRUE
+		);
+
+		// end
+
+		// checks validity of the SECURITY_DESCRIPTOR object. 
+		BOOL checkValidity = IsValidSecurityDescriptor(
+			&secObjInfo
+		);
+		// end
+
+
+		std::cout << "init sec descriptor error: " << GetLastError() << "\n";
 	}
 
-	SECURITY_DESCRIPTOR securityDescriptor() 
+	SECURITY_DESCRIPTOR getSecurityDescriptor() 
 	{
 		return secObjInfo;
 	}
@@ -66,6 +98,6 @@ public:
 	to-do
 	
 	~ tidy code up.
-	~ make sure everything is being initialized so we can pass it to procAttribs struct member in main.cpp.
+	~ ensure the initialization of the SECURITY_DESCRIPTOR STRUCT is correct. Use functions to check if it returns a NON zero value. 
 
 */
