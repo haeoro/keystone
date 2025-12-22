@@ -36,7 +36,7 @@ public:
 			&secObjInfo,
 			NULL
 		);
-
+		// end
 		// set revision level and give default initialization to mostly everything else in the struct (SECURITY_DESCRIPTOR). 
 
 		BOOL setRevision = InitializeSecurityDescriptor(
