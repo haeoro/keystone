@@ -5,7 +5,7 @@ class init
 private:
 	SECURITY_DESCRIPTOR secObjInfo{}; // contains info such as, owner, group, Sacl, Dacl, control. (Important)
 public:
-	void initializeSecurityDescriptor() 
+	void setSecurityDescriptor() 
 	{
 		// SID structure stuff
 		SID_IDENTIFIER_AUTHORITY sia
@@ -27,6 +27,7 @@ public:
 			0,
 			&si
 		);
+		
 		// end
 
 		// set control for (SECURITY_DESCRIPTOR)
@@ -63,27 +64,6 @@ public:
 			&si,
 			1
 		);
-
-		//end 
-		
-		// set sacl for SECURITY_DESCRIPTOR
-		BOOL setDesSacl = SetSecurityDescriptorSacl(
-			&secObjInfo,
-			FALSE, 
-			NULL, 
-			TRUE
-		);
-
-		// end
-
-		// set dacl for SECURITY_DESCRIPTOR
-		BOOL setDesDacl = SetSecurityDescriptorDacl(
-			&secObjInfo,
-			FALSE,
-			NULL,
-			TRUE
-		);
-
 		// end
 
 		// checks validity of the SECURITY_DESCRIPTOR object. 
